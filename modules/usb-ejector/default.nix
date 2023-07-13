@@ -6,7 +6,7 @@ in
 {
   options = {
     services.usb-ejector = {
-      enable = mkEnableOption ''
+      enable = lib.mkEnableOption ''
         Enable a USB-ejector service.
         This service provides an ability to automatically eject the USB drive
         once system is done booting.
