@@ -1,6 +1,6 @@
-flake: { config, lib, ... }:
+flake: { config, lib, stdenv, ... }:
 let
-  inherit (flake.packages.${pkgs.stdenv.hostPlatform.system}) usb-ejector;
+  inherit (flake.packages.${stdenv.hostPlatform.system}) usb-ejector;
   cfg = config.services.usb-ejector;
 in
 {
