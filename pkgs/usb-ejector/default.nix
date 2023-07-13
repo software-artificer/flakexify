@@ -20,6 +20,6 @@ in
     version = "0.0.1";
     paths = [ script ] ++ runtimeInputs;
     buildInputs = [ makeWrapper ];
-    postBuild = "wrapProgram $out/bin/${scriptName}.sh --prefix PATH : $out/bin";
+    postBuild = "wrapProgram $out/bin/${scriptName} --prefix PATH : $out/bin";
   };
 }
