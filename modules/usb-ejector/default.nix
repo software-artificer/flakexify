@@ -13,6 +13,7 @@ in
       '';
     };
   };
+
   config = lib.mkIf cfg.enable {
     systemd.services."usb-ejector@" = {
       description = "Detach configured USB drive from the system";

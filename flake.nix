@@ -20,7 +20,7 @@
           package = callPackage "${self}/pkgs/${path}" { };
         in
         lib.optionalAttrs (isSupportedSystem package.supportedSystems) {
-          "${package.name}" = package;
+          ${package.name} = package;
         };
 
       pkgNames = getDirectories ./pkgs;
@@ -32,7 +32,13 @@
       };
 
       modNames = getDirectories ./modules;
-      importModule = path: import "${self}/modules/${path}" self;
+      importModule = path:
+        let
+          name = builtins.baseNameOf path;
+        in
+        {
+          ${name} = import "${self}/modules/${path}" self;
+        };
       loadModule = modules: path: modules // importModule path;
       genModules = forEach modNames loadModule;
     in
