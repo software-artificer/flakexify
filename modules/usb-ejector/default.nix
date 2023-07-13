@@ -27,7 +27,7 @@ in
 
       serviceConfig = {
         Type = "oneshot";
-        ExecStart = "${lib.getBin usb-ejector}/bin/usb-ejector.sh";
+        ExecStart = "${usb-ejector}/bin/usb-ejector.sh";
       };
     };
   };
