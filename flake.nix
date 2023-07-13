@@ -10,6 +10,7 @@
       getDirectories = path: builtins.attrNames (
         lib.filterAttrs (k: v: v == "directory") (builtins.readDir path)
       );
+      forEach = collection: fn: builtins.foldl' fn { } collection;
 
       importPackage = path: nixpkgs:
         let
@@ -24,14 +25,19 @@
 
       pkgNames = getDirectories ./pkgs;
       loadPackage = nixpkgs: packages: path: packages // importPackage path nixpkgs;
-      loadPackages = nixpkgs: builtins.foldl' (loadPackage nixpkgs) { } pkgNames;
+      loadPackages = nixpkgs: forEach pkgNames (loadPackage nixpkgs);
 
       genPackages = result: system: result // {
         "${system}" = loadPackages (import nixpkgs { system = system; });
       };
+
+      modNames = getDirectories ./modules;
+      importModule = path: import "${self}/modules/${path}" self;
+      loadModule = modules: path: modules // importModule path;
+      genModules = forEach modNames loadModule;
     in
     {
-      nixosModules = genModules self;
-      packages = builtins.foldl' genPackages { } lib.systems.flakeExposed;
+      nixosModules = genModules;
+      packages = forEach lib.systems.flakeExposed genPackages;
     };
 }
