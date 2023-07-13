@@ -20,7 +20,7 @@
           package = callPackage "${self}/pkgs/${path}" { };
         in
         lib.optionalAttrs (isSupportedSystem package.supportedSystems) {
-          ${package.name} = package;
+          ${package.name} = package.derivation;
         };
 
       pkgNames = getDirectories ./pkgs;
