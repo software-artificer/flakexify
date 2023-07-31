@@ -2,7 +2,7 @@ flake: { config, lib, pkgs, utils, ... }:
 with lib;
 let
   inherit (flake.packages.${pkgs.stdenv.hostPlatform.system}) usb-ejector;
-  cfg = config.my-nix-flakes-modules.usb-boot-decryption-key;
+  cfg = config.flakexify.usb-boot-decryption-key;
 
   post_device_commands = strings.concatMapStrings
     (uuid: "waitDevice /dev/disk/by-partuuid/" + uuid + "\n")
@@ -24,7 +24,7 @@ let
 in
 {
   options = {
-    my-nix-flakes-modules = {
+    flakexify = {
       usb-boot-decryption-key = {
         key-partuuids = mkOption {
           type = types.listOf types.string;
