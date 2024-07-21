@@ -1,18 +1,19 @@
 {
   description = "A collection of packages that I use on my various Nix-enabled systems";
 
-  inputs.nixpkgs.url = "nixpkgs/nixos-23.05";
+  inputs.nixpkgs.url = "nixpkgs/nixos-24.05";
 
-  outputs = { nixpkgs, self, ... }:
+  outputs =
+    { nixpkgs, self, ... }:
     let
       lib = nixpkgs.lib;
 
-      getDirectories = path: builtins.attrNames (
-        lib.filterAttrs (k: v: v == "directory") (builtins.readDir path)
-      );
+      getDirectories =
+        path: builtins.attrNames (lib.filterAttrs (k: v: v == "directory") (builtins.readDir path));
       forEach = collection: fn: builtins.foldl' fn { } collection;
 
-      importPackage = path: nixpkgs:
+      importPackage =
+        path: nixpkgs:
         let
           callPackage = lib.callPackageWith (nixpkgs // self);
           currentSystem = nixpkgs.system;
@@ -24,15 +25,17 @@
         };
 
       pkgNames = getDirectories ./pkgs;
-      loadPackage = nixpkgs: packages: path: packages // importPackage path nixpkgs;
+      loadPackage =
+        nixpkgs: packages: path:
+        packages // importPackage path nixpkgs;
       loadPackages = nixpkgs: forEach pkgNames (loadPackage nixpkgs);
 
-      genPackages = result: system: result // {
-        "${system}" = loadPackages (import nixpkgs { system = system; });
-      };
+      genPackages =
+        result: system: result // { "${system}" = loadPackages (import nixpkgs { system = system; }); };
 
       modNames = getDirectories ./modules;
-      importModule = path:
+      importModule =
+        path:
         let
           name = builtins.baseNameOf path;
         in

@@ -1,16 +1,26 @@
-{ writeScriptBin, symlinkJoin, coreutils, util-linuxMinimal, makeWrapper, ... }:
+{
+  writeScriptBin,
+  symlinkJoin,
+  coreutils,
+  util-linuxMinimal,
+  makeWrapper,
+  ...
+}:
 let
-  runtimeInputs = [ coreutils util-linuxMinimal ];
+  runtimeInputs = [
+    coreutils
+    util-linuxMinimal
+  ];
   name = "usb-ejector";
   scriptName = "${name}.sh";
-  script = (writeScriptBin scriptName (
-    builtins.readFile (./. + "/${scriptName}")
-  )).overrideAttrs(orig: {
-    buildCommand = ''
-      ${orig.buildCommand}
-      patchShebangs $out
-    '';
-  });
+  script =
+    (writeScriptBin scriptName (builtins.readFile (./. + "/${scriptName}"))).overrideAttrs
+      (orig: {
+        buildCommand = ''
+          ${orig.buildCommand}
+          patchShebangs $out
+        '';
+      });
 in
 {
   name = name;
