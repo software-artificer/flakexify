@@ -8,13 +8,14 @@ Add the following into your system `flake.nix` file:
 {
   # ... snip ...
   inputs = {
+    nixpkgs.url = "nixpkgs/nixos-24.05";
     # ... snip ...
     flakexify.url = "github:filakhtov/flakexify";
     flakexify.inputs.nixpkgs.follows = "nixpkgs";
     # ... snip ...
   };
 
-  outputs = { flakexify }: {
+  outputs = { flakexify, nixpkgs }: {
     nixosConfigurations = {
       myHostname = nixpkgs.lib.nixosSystem {
         # ... snip ...
