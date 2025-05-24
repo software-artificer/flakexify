@@ -24,7 +24,7 @@ in
     fonts = {
       enableGhostscriptFonts = true;
       packages = with pkgs; [
-        (nerdfonts.override { fonts = [ "SourceCodePro" ]; })
+        (nerd-fonts.sauce-code-pro)
         comic-relief
         google-fonts
         libertine
